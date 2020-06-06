@@ -1,12 +1,13 @@
 package ru.job4j.it;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Converter {
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<Integer>() {
-            Iterator<Integer> innerIt = it.next();
+            Iterator<Integer> innerIt = Collections.emptyIterator();
 
             @Override
             public boolean hasNext() {
