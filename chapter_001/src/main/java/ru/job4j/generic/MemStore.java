@@ -2,7 +2,7 @@ package ru.job4j.generic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
@@ -16,11 +16,10 @@ public final class MemStore<T extends Base> implements Store<T> {
     @Override
     public boolean replace(String id, T model) {
         boolean result = false;
-        try {
-            this.mem.set(this.mem.indexOf(findById(id)), model);
+        Optional<T> itemById = findById(id);
+        if (itemById.isPresent()) {
+            this.mem.set(this.mem.indexOf(itemById.get()), model);
             result = true;
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
         }
         return result;
     }
@@ -28,18 +27,17 @@ public final class MemStore<T extends Base> implements Store<T> {
     @Override
     public boolean delete(String id) {
         boolean result = false;
-        try {
-            this.mem.remove(findById(id));
+        Optional<T> itemById = findById(id);
+        if (itemById.isPresent()) {
+            this.mem.remove(itemById.get());
             result = true;
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public T findById(String id) {
+    public Optional<T> findById(String id) {
         return this.mem.parallelStream().filter(T -> T.getId().equals(id))
-                .findAny().orElseThrow(() -> new NoSuchElementException("Not find item by id: " + id));
+                .findAny();
     }
 }

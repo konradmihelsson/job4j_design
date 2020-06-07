@@ -1,5 +1,7 @@
 package ru.job4j.generic;
 
+import java.util.Optional;
+
 public class RoleStore implements Store<Role> {
 
     private final Store<Role> store = new MemStore<>();
@@ -20,7 +22,7 @@ public class RoleStore implements Store<Role> {
     }
 
     @Override
-    public Role findById(String id) {
+    public Optional<Role> findById(String id) {
         return this.store.findById(id);
     }
 }
