@@ -22,7 +22,7 @@ public class RoleStore implements Store<Role> {
     }
 
     @Override
-    public Optional<Role> findById(String id) {
+    public Role findById(String id) {
         return this.store.findById(id);
     }
 }

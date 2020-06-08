@@ -1,7 +1,5 @@
 package ru.job4j.generic;
 
-import java.util.Optional;
-
 public interface Store<T extends Base> {
 
     void add(T model);
@@ -10,5 +8,5 @@ public interface Store<T extends Base> {
 
     boolean delete(String id);
 
-    Optional<T> findById(String id);
+    T findById(String id);
 }

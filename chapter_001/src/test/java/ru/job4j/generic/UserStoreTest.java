@@ -3,6 +3,8 @@ package ru.job4j.generic;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -26,24 +28,29 @@ public class UserStoreTest {
     }
 
     @Test
-    public void whenAddAndFindById() {
-        assertThat(store.findById("Great").get(), is(user2));
+    public void whenFindById() {
+        assertThat(store.findById("Great"), is(user2));
     }
 
     @Test
     public void whenReplaceAndFind() {
         assertThat(store.replace("Great", user4), is(true));
-        assertThat(store.findById("Quick").get(), is(user4));
+        assertThat(store.findById("Quick"), is(user4));
     }
 
-    @Test
+    @Test (expected = NoSuchElementException.class)
     public void whenDeleteAndFindByNonexistentId() {
         assertThat(store.delete("Great"), is(true));
-        assertThat(store.findById("Great").isPresent(), is(false));
+        assertThat(store.findById("Great"), is(false));
     }
 
     @Test
     public void whenDeleteByNonexistentId() {
         assertThat(store.delete("Spectacular"), is(false));
+    }
+
+    @Test
+    public void whenReplaceByNonexistentId() {
+        assertThat(store.replace("Spectacular", user4), is(false));
     }
 }
