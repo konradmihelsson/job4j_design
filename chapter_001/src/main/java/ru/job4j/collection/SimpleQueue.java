@@ -15,6 +15,7 @@ public class SimpleQueue<T> {
             }
         }
         size--;
+        inEmpty = true;
         return out.pop();
     }
 
@@ -28,5 +29,6 @@ public class SimpleQueue<T> {
         }
         this.in.push(value);
         size++;
+        inEmpty = false;
     }
 }
