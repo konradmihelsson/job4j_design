@@ -1,0 +1,46 @@
+package ru.job4j.collection;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+import org.junit.Test;
+
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class SimpleSetTest {
+
+    @Test
+    public void whenAddThenIt() {
+        SimpleSet<String> set = new SimpleSet<>();
+        set.add("first");
+        String rsl = set.iterator().next();
+        assertThat(rsl, is("first"));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenItEmpty() {
+        SimpleSet<String> set = new SimpleSet<>();
+        set.iterator().next();
+    }
+
+    @Test
+    public void whenAddTwoSameElementsThenAddingOne() {
+        SimpleSet<String> set = new SimpleSet<>();
+        set.add("first");
+        set.add("first");
+        Iterator<String> it = set.iterator();
+        it.next();
+        assertThat(it.hasNext(), is(false));
+    }
+
+    @Test(expected = ConcurrentModificationException.class)
+    public void whenCorruptedIt() {
+        SimpleSet<String> set = new SimpleSet<>();
+        set.add("first");
+        Iterator<String> it = set.iterator();
+        set.add("second");
+        it.next();
+    }
+}
