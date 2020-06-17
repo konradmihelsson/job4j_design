@@ -8,11 +8,7 @@ public class SimpleQueue<T> {
 
     public T poll() {
         if (!inEmpty) {
-            int count = size;
-            while (count != 0) {
-                out.push(in.pop());
-                count--;
-            }
+            transposition(in, out);
         }
         size--;
         inEmpty = true;
@@ -21,14 +17,18 @@ public class SimpleQueue<T> {
 
     public void push(T value) {
         if (inEmpty) {
-            int count = size;
-            while (count != 0) {
-                in.push(out.pop());
-                count--;
-            }
+            transposition(out, in);
         }
         this.in.push(value);
         size++;
         inEmpty = false;
+    }
+
+    private void transposition(SimpleStack<T> from, SimpleStack<T> to) {
+        int count = size;
+        while (count != 0) {
+            to.push(from.pop());
+            count--;
+        }
     }
 }
