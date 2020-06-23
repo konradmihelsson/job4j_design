@@ -29,13 +29,21 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
     }
 
     V get(K key) {
-        return (V) this.store[indexFor(hashCalc(key), this.store.length)].value;
+        V result = null;
+        int index = indexFor(hashCalc(key), this.store.length);
+        if ((this.store[index].getKey() == null && key == null)
+                || (this.store[index].getKey().equals(key))) {
+            result = (V) this.store[index].value;
+        }
+        return result;
     }
 
     boolean delete(K key) {
         boolean result = false;
         int index = indexFor(hashCalc(key), this.store.length);
-        if (this.store[index] != null) {
+        if (this.store[index] != null
+                && ((this.store[index].getKey() == null && key == null)
+                || (this.store[index].getKey().equals(key)))) {
             this.store[index] = null;
             result = true;
             this.modCount++;
@@ -93,7 +101,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return store[position++];
+                return (Node<K, V>) store[position++];
             }
         };
     }

@@ -85,4 +85,11 @@ public class SimpleHashMapTest {
         assertThat(map.delete(null), is(true));
         assertThat(map.iterator().hasNext(), is(false));
     }
+
+    @Test (expected = NullPointerException.class)
+    public void whenAddThenGetNullKey() {
+        SimpleHashMap<Integer, String> map = new SimpleHashMap<>();
+        map.insert(1, "first");
+        map.get(null);
+    }
 }

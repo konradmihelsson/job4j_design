@@ -54,4 +54,23 @@ public class SimpleArrayTest {
         array.add("second");
         it.next();
     }
+
+    @Test
+    public void whenIncreaseStoreSize() {
+        SimpleArray<Integer> array = new SimpleArray<>();
+        array.add(1);
+        array.add(2);
+        array.add(3);
+        array.add(4);
+        array.add(5);
+        array.add(6);
+        array.add(7);
+        array.add(8);
+        array.add(9);
+        array.add(10);
+        array.add(11);
+        array.add(12);
+        Integer rsl = array.get(11);
+        assertThat(rsl, is(12));
+    }
 }
