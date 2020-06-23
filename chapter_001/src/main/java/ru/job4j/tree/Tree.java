@@ -36,4 +36,20 @@ class Tree<E> implements SimpleTree<E> {
         }
         return rsl;
     }
+
+    public boolean isBinary() {
+        boolean result = true;
+        ArrayDeque<Node<E>> childrenStore = new ArrayDeque<>();
+        List<Node<E>> childrenOfNode;
+        childrenStore.add(this.root);
+        while (!childrenStore.isEmpty()) {
+            childrenOfNode = childrenStore.poll().children;
+            if (childrenOfNode.size() > 2) {
+                result = false;
+                break;
+            }
+            childrenStore.addAll(childrenOfNode);
+        }
+        return result;
+    }
 }
