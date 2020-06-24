@@ -52,9 +52,13 @@ public class AnalysisTest {
 
         Analysis analysis = new Analysis();
         Analysis.Info info = analysis.diff(prev, curr);
-
         assertThat(info.added, is(2));
         assertThat(info.changed, is(2));
         assertThat(info.deleted, is(1));
+
+        Analysis.Info info2 = analysis.diffAnother(prev, curr);
+        assertThat(info2.added, is(2));
+        assertThat(info2.changed, is(2));
+        assertThat(info2.deleted, is(1));
     }
 }
