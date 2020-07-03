@@ -26,3 +26,4 @@ target/
 .idea/
 *.iml
 src/site/
+/result.txt
