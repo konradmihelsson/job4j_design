@@ -24,6 +24,16 @@ public class FreezeStrTest {
 
     @Test
     public void whenBothIsNull() {
-        assertThat(FreezeStr.eq("", ""), is(true));
+        assertThat(FreezeStr.eq(null, null), is(true));
+    }
+
+    @Test
+    public void whenOneIsNull() {
+        assertThat(FreezeStr.eq(null, "heloo"), is(false));
+    }
+
+    @Test
+    public void whenDifferentStringLength() {
+        assertThat(FreezeStr.eq("hello", "helloooo"), is(false));
     }
 }

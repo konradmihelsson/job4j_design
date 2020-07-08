@@ -1,17 +1,16 @@
 package ru.job4j.control;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class Merging {
     public static Map<String, Set<String>> mergeUsers(Map<String, Set<String>> input) {
 
-        Map<String, String> temp = new TreeMap<>();
-        Map<String, Set<String>> result = new TreeMap<>(input);
-        for (Map.Entry<String, Set<String>> pair : input.entrySet()) {
-            String user = pair.getKey();
-            Set<String> emails = pair.getValue();
+        Map<String, String> temp = new HashMap<>();
+        Map<String, Set<String>> result = new HashMap<>(input);
+        for (String user : input.keySet()) {
+            Set<String> emails = input.get(user);
             String tempUser = null;
             for (String email : emails) {
                 String existingUser = temp.put(email, user);
