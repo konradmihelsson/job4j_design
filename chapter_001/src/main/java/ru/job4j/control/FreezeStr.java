@@ -1,7 +1,6 @@
 package ru.job4j.control;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FreezeStr {
@@ -9,7 +8,7 @@ public class FreezeStr {
         boolean result = false;
         if (left == null && right == null) {
             result = true;
-        } else if (left != null && right != null) {
+        } else if (left != null && right != null && left.length() == right.length()) {
             List<Character> leftList = new ArrayList<>();
             List<Character> rightList = new ArrayList<>();
             for (char ch : left.toCharArray()) {
@@ -18,9 +17,10 @@ public class FreezeStr {
             for (char ch : right.toCharArray()) {
                 rightList.add(ch);
             }
-            Collections.sort(leftList);
-            Collections.sort(rightList);
-            result = leftList.equals(rightList);
+            for (int i = leftList.size() - 1; i >= 0; i--) {
+                rightList.remove(leftList.remove(i));
+            }
+            result = rightList.isEmpty();
         }
         return result;
     }
