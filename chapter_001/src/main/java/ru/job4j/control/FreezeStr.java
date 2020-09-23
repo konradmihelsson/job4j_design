@@ -1,7 +1,7 @@
 package ru.job4j.control;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FreezeStr {
     public static boolean eq(String left, String right) {
@@ -9,18 +9,21 @@ public class FreezeStr {
         if (left == null && right == null) {
             result = true;
         } else if (left != null && right != null && left.length() == right.length()) {
-            List<Character> leftList = new ArrayList<>();
-            List<Character> rightList = new ArrayList<>();
-            for (char ch : left.toCharArray()) {
-                leftList.add(ch);
+            Map<Character, Integer> leftStrChars = new HashMap<>();
+            for (Character c : left.toCharArray()) {
+                leftStrChars.merge(c, 1, Integer::sum);
             }
-            for (char ch : right.toCharArray()) {
-                rightList.add(ch);
+            for (Character c : right.toCharArray()) {
+                Integer numOfChar = leftStrChars.get(c);
+                if (numOfChar == null) {
+                    break;
+                } else if (numOfChar > 1) {
+                    leftStrChars.put(c, numOfChar - 1);
+                } else {
+                    leftStrChars.remove(c);
+                }
             }
-            for (int i = leftList.size() - 1; i >= 0; i--) {
-                rightList.remove(leftList.remove(i));
-            }
-            result = rightList.isEmpty();
+            result = leftStrChars.isEmpty();
         }
         return result;
     }
