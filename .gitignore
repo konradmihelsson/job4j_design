@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+!/chapter_002/src/test/resources/analizy_server.log
 
 # BlueJ files
 *.ctxt
@@ -31,3 +32,4 @@ src/site/
 /even.txt
 /log.txt
 /404.txt
+/chapter_002/src/test/resources/analizy_unavailable.csv
