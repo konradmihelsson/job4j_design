@@ -1,14 +1,15 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Analizy {
     public void unavailable(String source, String target) {
-        try (BufferedReader read = new BufferedReader(new FileReader(source));
-             PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
-            String line;
-            boolean siteAvailableState = true;
-            while ((line = read.readLine()) != null) {
+        List<String> linesStore = getData(source);
+        boolean siteAvailableState = true;
+        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
+            for (String line : linesStore) {
                 if (line.length() == 0) {
                     continue;
                 } else {
@@ -17,7 +18,7 @@ public class Analizy {
                         out.print(pair[1] + ";");
                         siteAvailableState = false;
                     } else if (!siteAvailableState && (pair[0].equals("200") || pair[0].equals("300"))) {
-                        out.print(pair[1] + ";" + System.lineSeparator());
+                        out.println(pair[1] + ";");
                         siteAvailableState = true;
                     }
                 }
@@ -34,5 +35,15 @@ public class Analizy {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private List<String> getData(String sourceFilePath) {
+        List<String> result = new ArrayList<>();
+        try (BufferedReader read = new BufferedReader(new FileReader(sourceFilePath))) {
+            read.lines().forEach(result::add);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
