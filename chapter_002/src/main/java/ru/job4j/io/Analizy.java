@@ -10,9 +10,7 @@ public class Analizy {
         boolean siteAvailableState = true;
         try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
             for (String line : linesStore) {
-                if (line.length() == 0) {
-                    continue;
-                } else {
+                if (line.length() != 0) {
                     String[] pair = line.split(" ", 2);
                     if (siteAvailableState && (pair[0].equals("400") || pair[0].equals("500"))) {
                         out.print(pair[1] + ";");
