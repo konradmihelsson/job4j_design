@@ -32,7 +32,8 @@ public class Zip {
     }
 
     public static List<Path> search(String rootDirectory, List<String> exclude) throws IOException {
-        SearchFilesForZip searcher = new SearchFilesForZip(exclude);
+        SearchFilesForZip searcher =
+                new SearchFilesForZip(s -> !exclude.contains(s.substring(s.lastIndexOf('.') + 1)));
         Files.walkFileTree(Path.of(rootDirectory), searcher);
         return searcher.getPaths();
     }

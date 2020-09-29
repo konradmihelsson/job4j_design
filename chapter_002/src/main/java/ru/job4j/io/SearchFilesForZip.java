@@ -7,16 +7,17 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 class SearchFilesForZip implements FileVisitor<Path> {
 
-    SearchFilesForZip(List<String> exclude) {
-        this.exclude = exclude;
+    SearchFilesForZip(Predicate<String> predicate) {
+        this.predicate = predicate;
     }
 
-    private List<String> exclude;
+    private Predicate<String> predicate;
     private List<Path> store = new ArrayList<>();
 
     List<Path> getPaths() {
@@ -30,13 +31,7 @@ class SearchFilesForZip implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        boolean isCorrect = true;
-        for (String ext : this.exclude) {
-            if (file.toFile().getName().endsWith(ext)) {
-                isCorrect = false;
-            }
-        }
-        if (isCorrect) {
+        if (predicate.test(file.toFile().getName())) {
             this.store.add(file);
         }
         return CONTINUE;

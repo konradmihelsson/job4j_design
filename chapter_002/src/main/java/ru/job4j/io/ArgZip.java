@@ -13,9 +13,9 @@ public class ArgZip {
 
     public boolean valid() {
         if (this.args.length == 0 || this.args.length > 3) {
-            throw new IllegalArgumentException("Wrong args. Usage: java -jar zip.jar "
-                    + "-d=DISK:\\path\\to\\folder\\ -e=exclude,filetypes,log,txt,etc"
-                    + "-o=DISK:\\path\\to\\OutputFile.zip");
+            throw new IllegalArgumentException("Wrong args. Usage: java -jar zip.jar"
+                    + " -d=DISK:\\path\\to\\folder\\ -e=exclude,filetypes,log,txt,etc"
+                    + " -o=DISK:\\path\\to\\OutputFile.zip");
         }
         return true;
     }
