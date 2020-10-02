@@ -1,16 +1,44 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ConsoleChat {
+
+    private final Map<String, Consumer<String>> actions = new HashMap<>();
+
+    public ConsoleChat() {
+        this.actions.put("стоп", this::pause);
+        this.actions.put("продолжить", this::proceed);
+        this.actions.put("закончить", this::exit);
+    }
+
+    private boolean isExit = false;
+    private boolean isPause = false;
+
+    private void pause(String userInput) {
+        this.isPause = true;
+    }
+
+    private void proceed(String userInput) {
+        this.isPause = false;
+    }
+
+    private void exit(String userInput) {
+        this.isPause = true;
+        this.isExit = true;
+    }
+
+    private void chatting(String userInput) {
+
+    }
+
     public static void main(String[] args) {
-        boolean isStop = false, isExit = false;
+
+        ConsoleChat consoleChat = new ConsoleChat();
         List<String> robotPhrases = getData("./robot_answer.txt");
         String userPhrase, robotPhrase;
         String outputFile = "./console_chat.log";
@@ -22,20 +50,11 @@ public class ConsoleChat {
         try (PrintWriter out = new PrintWriter(new BufferedOutputStream(
                 new FileOutputStream(outputFile)));
              Scanner in = new Scanner(System.in)) {
-            while (!isExit) {
+            while (!consoleChat.isExit) {
                 userPhrase = in.nextLine();
                 out.println(userPhrase);
-                if (userPhrase.equals("закончить")) {
-                    isExit = true;
-                    continue;
-                } else if (userPhrase.equals("стоп") && !isStop) {
-                    isStop = true;
-                } else if (userPhrase.equals("продолжить") && isStop) {
-                    isStop = false;
-                    continue;
-                }
-
-                if (!isStop) {
+                consoleChat.actions.getOrDefault(userPhrase, consoleChat::chatting).accept(userPhrase);
+                if (!consoleChat.isPause) {
                     robotPhrase = robotPhrases.get(random.nextInt(robotPhrases.size()));
                     System.out.println(robotPhrase);
                     out.println(robotPhrase);
