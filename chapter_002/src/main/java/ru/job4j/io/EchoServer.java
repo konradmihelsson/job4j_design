@@ -3,27 +3,47 @@ package ru.job4j.io;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class EchoServer {
+
+    private final Map<String, Consumer<String>> actions = new HashMap<>();
+
+    private boolean isExit = false;
+    private String resp;
+
+    public EchoServer() {
+        this.actions.put("Hello", this::hello);
+        this.actions.put("Exit", this::exit);
+    }
+
+    private void hello(String req) {
+        this.resp = "Hello my dear friend!";
+    }
+
+    private void exit(String req) {
+        this.resp = "";
+        this.isExit = true;
+    }
+
+    private void communicate(String req) {
+        this.resp = req;
+    }
+
     public static void main(String[] args) throws IOException {
-        boolean isExit = false;
+        EchoServer echoServer = new EchoServer();
         try (ServerSocket server = new ServerSocket(9000)) {
-            while (!isExit) {
+            while (!echoServer.isExit) {
                 Socket socket = server.accept();
-                try (OutputStream out = socket.getOutputStream();
-                     BufferedReader in = new BufferedReader(
-                             new InputStreamReader(socket.getInputStream()))) {
-                    String str;
-                    boolean strIsEmpty = false;
-                    while (!strIsEmpty) {
-                        str = in.readLine();
-                        if (str.contains("Bye")) {
-                            isExit = true;
-                        }
-                        strIsEmpty = str.isEmpty();
-                        System.out.println(str);
-                    }
-                    out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
+                try (OutputStream out = socket.getOutputStream()) {
+                    HttpParser httpParser = new HttpParser(socket.getInputStream());
+                    httpParser.parseRequest();
+                    String str = httpParser.getParam("msg");
+                    echoServer.actions.getOrDefault(str, echoServer::communicate).accept(str);
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write(echoServer.resp.getBytes());
                 }
             }
         }
