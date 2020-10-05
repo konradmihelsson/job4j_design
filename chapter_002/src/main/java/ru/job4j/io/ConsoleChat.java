@@ -6,9 +6,13 @@ import java.util.function.Consumer;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class ConsoleChat {
+public class ConsoleChat implements Runnable {
 
     private final Map<String, Consumer<String>> actions = new HashMap<>();
+    private List<String> logChatData = new ArrayList<>();
+    private List<String> robotPhrases = getData("./robot_answer.txt");
+    private String outputFile = "./console_chat.log";
+    private Random random = new Random();
 
     public ConsoleChat() {
         this.actions.put("стоп", this::pause);
@@ -33,39 +37,19 @@ public class ConsoleChat {
     }
 
     private void chatting(String userInput) {
-
-    }
-
-    public static void main(String[] args) {
-
-        ConsoleChat consoleChat = new ConsoleChat();
-        List<String> robotPhrases = getData("./robot_answer.txt");
-        String userPhrase, robotPhrase;
-        String outputFile = "./console_chat.log";
-
-        Random random = new Random();
-        System.out.println("Консольный чат. Для отключения робота-собеседника наберите \"стоп\",");
-        System.out.println(" для включения наберите \"продолжить\". Для выхода из программы наберите \"закончить\".");
-        System.out.println("Введите фразу для начала диалога.");
-        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(
-                new FileOutputStream(outputFile)));
-             Scanner in = new Scanner(System.in)) {
-            while (!consoleChat.isExit) {
-                userPhrase = in.nextLine();
-                out.println(userPhrase);
-                consoleChat.actions.getOrDefault(userPhrase, consoleChat::chatting).accept(userPhrase);
-                if (!consoleChat.isPause) {
-                    robotPhrase = robotPhrases.get(random.nextInt(robotPhrases.size()));
-                    System.out.println(robotPhrase);
-                    out.println(robotPhrase);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!this.isPause) {
+            String robotPhrase = robotPhrases.get(random.nextInt(robotPhrases.size()));
+            System.out.println(robotPhrase);
+            logChatData.add(robotPhrase);
         }
     }
 
-    private static List<String> getData(String sourceFilePath) {
+    public static void main(String[] args) {
+        ConsoleChat consoleChat = new ConsoleChat();
+        consoleChat.run();
+    }
+
+    private List<String> getData(String sourceFilePath) {
         List<String> result = new ArrayList<>();
         try (BufferedReader read = new BufferedReader(new FileReader(sourceFilePath, UTF_8))) {
             read.lines().forEach(result::add);
@@ -73,5 +57,31 @@ public class ConsoleChat {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private void writeData(List<String> linesForWrite, String outputFileName) {
+        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(
+                new FileOutputStream(outputFileName)))) {
+            linesForWrite.forEach(out::println);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Консольный чат. Для отключения робота-собеседника наберите \"стоп\",");
+        System.out.println(" для включения наберите \"продолжить\". Для выхода из программы наберите \"закончить\".");
+        System.out.println("Введите фразу для начала диалога.");
+        try (Scanner in = new Scanner(System.in)) {
+            while (!this.isExit) {
+                String userPhrase = in.nextLine();
+                logChatData.add(userPhrase);
+                this.actions.getOrDefault(userPhrase, this::chatting).accept(userPhrase);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        writeData(this.logChatData, outputFile);
     }
 }
