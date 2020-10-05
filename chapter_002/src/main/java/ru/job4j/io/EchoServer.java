@@ -1,5 +1,8 @@
 package ru.job4j.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +12,7 @@ import java.util.function.Consumer;
 
 public class EchoServer {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
     private final Map<String, Consumer<String>> actions = new HashMap<>();
 
     private boolean isExit = false;
@@ -32,7 +36,7 @@ public class EchoServer {
         this.resp = req;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         EchoServer echoServer = new EchoServer();
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!echoServer.isExit) {
@@ -46,6 +50,8 @@ public class EchoServer {
                     out.write(echoServer.resp.getBytes());
                 }
             }
+        } catch (Exception e) {
+            LOG.error("Exception in log", e);
         }
     }
 }
