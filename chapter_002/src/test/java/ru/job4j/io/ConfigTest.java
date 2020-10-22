@@ -10,7 +10,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithoutComment() {
-        String path = "./src/test/resources/app.properties";
+        String path = "./src/test/resources/config.properties";
         Config config = new Config(path);
         config.load();
         assertThat(
@@ -21,7 +21,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithComment() {
-        String path = "./src/test/resources/app.properties";
+        String path = "./src/test/resources/config.properties";
         Config config = new Config(path);
         config.load();
         assertThat(
@@ -32,7 +32,7 @@ public class ConfigTest {
 
     @Test
     public void whenEmptyLine() {
-        String path = "./src/test/resources/app.properties";
+        String path = "./src/test/resources/config.properties";
         Config config = new Config(path);
         config.load();
         assertThat(
@@ -43,7 +43,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithoutCommentButLineWithSpaces() {
-        String path = "./src/test/resources/app.properties";
+        String path = "./src/test/resources/config.properties";
         Config config = new Config(path);
         config.load();
         assertThat(
