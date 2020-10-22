@@ -25,7 +25,9 @@ public class ImportDB {
             String line;
             while ((line = rd.readLine()) != null) {
                 String[] pair = line.split(";");
-                users.add(new User(pair[0], pair[1]));
+                if (pair.length == 2) {
+                    users.add(new User(pair[0], pair[1]));
+                }
             }
         }
         return users;
