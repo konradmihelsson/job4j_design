@@ -41,4 +41,25 @@ public class CinemaTest {
         sessions.add(session3d);
         assertThat(session3d, is(sessions.get(0)));
     }
+
+    @Ignore ("It use to study only")
+    @Test (expected = Exception.class)
+    public void whenBuyTicketOnWrongSessionThenException() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 15, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+    }
+
+    @Ignore ("It use to study only")
+    @Test (expected = Exception.class)
+    public void whenBuyTicketOnTakenSeatThenException() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        Ticket ticket2 = cinema.buy(account, 1, 1, date);
+    }
 }
