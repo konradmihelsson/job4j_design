@@ -1,6 +1,5 @@
 package ru.job4j.design.srp;
 
-import java.text.DecimalFormat;
 import java.util.function.Predicate;
 
 public abstract class ReportEngine {

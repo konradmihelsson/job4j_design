@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.function.Predicate;
 
-public class ReportEngineHRDpt extends ReportEngine {
+public class ReportEngineHRDpt implements Report {
+
+    private Store store;
 
     public ReportEngineHRDpt(Store store) {
-        super(store);
+        this.store = store;
     }
 
     @Override
@@ -16,7 +18,7 @@ public class ReportEngineHRDpt extends ReportEngine {
         Comparator<Employee> bySalary = Comparator.comparing(Employee::getSalary).reversed();
         text.append("Name; Salary;")
                 .append(System.lineSeparator());
-        ArrayList<Employee> toOutput = new ArrayList<>(super.store.findBy(filter));
+        ArrayList<Employee> toOutput = new ArrayList<>(this.store.findBy(filter));
         toOutput.sort(bySalary);
         for (Employee employee : toOutput) {
             text.append(employee.getName()).append(";")

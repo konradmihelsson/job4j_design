@@ -2,12 +2,14 @@ package ru.job4j.design.srp;
 
 import java.util.function.Predicate;
 
-public class ReportEngineEconomicDpt extends ReportEngine {
+public class ReportEngineEconomicDpt implements Report {
 
-    private static final float INCOME_TAX = 0.13f;
+    private Store store;
+    private Converter converter;
 
-    public ReportEngineEconomicDpt(Store store) {
-        super(store);
+    public ReportEngineEconomicDpt(Store store, Converter converter) {
+        this.store = store;
+        this.converter = converter;
     }
 
     @Override
@@ -16,11 +18,11 @@ public class ReportEngineEconomicDpt extends ReportEngine {
         text.append("Name; Hired; Fired; Salary w/o tax;")
                 .append(System.lineSeparator());
 
-        for (Employee employee : super.store.findBy(filter)) {
+        for (Employee employee : this.store.findBy(filter)) {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(String.format("%.2f", employee.getSalary() * (1 - INCOME_TAX))).append(";")
+                    .append(this.converter.convert(employee.getSalary())).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

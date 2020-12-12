@@ -2,10 +2,12 @@ package ru.job4j.design.srp;
 
 import java.util.function.Predicate;
 
-public class ReportEngineDvlDpt extends ReportEngine {
+public class ReportEngineDvlDpt implements Report {
+
+    private Store store;
 
     public ReportEngineDvlDpt(Store store) {
-        super(store);
+        this.store = store;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class ReportEngineDvlDpt extends ReportEngine {
                 .append("<td>Fired</td>")
                 .append("<td>Salary</td>")
                 .append("</tr>");
-        for (Employee employee : super.store.findBy(filter)) {
+        for (Employee employee : this.store.findBy(filter)) {
             text.append("<tr>")
                     .append("<td>").append(employee.getName()).append("</td>")
                     .append("<td>").append(employee.getHired()).append("</td>")

@@ -15,7 +15,7 @@ public class ReportEngineTest {
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
-        ReportEngine engine = new ReportEngineDvlDpt(store);
+        Report engine = new ReportEngineDvlDpt(store);
         StringBuilder expect = new StringBuilder()
                 .append("<html><head><title>HTML Report</title></head>")
                 .append("<body><div>")
@@ -40,17 +40,18 @@ public class ReportEngineTest {
     @Test
     public void whenReportEngineEconomicDptTest() {
         MemStore store = new MemStore();
+        Converter converter = new ConverterSalaryTax();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
-        ReportEngine engine = new ReportEngineEconomicDpt(store);
+        Report engine = new ReportEngineEconomicDpt(store, converter);
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary w/o tax;")
                 .append(System.lineSeparator())
                 .append("Ivan;")
                 .append(now).append(";")
                 .append(now).append(";")
-                .append("87,00;")
+                .append("87.00;")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
@@ -63,7 +64,7 @@ public class ReportEngineTest {
         Employee worker2 = new Employee("Igor", now, now, 200);
         store.add(worker);
         store.add(worker2);
-        ReportEngine engine = new ReportEngineHRDpt(store);
+        Report engine = new ReportEngineHRDpt(store);
         StringBuilder expect = new StringBuilder()
                 .append("Name; Salary;")
                 .append(System.lineSeparator())
