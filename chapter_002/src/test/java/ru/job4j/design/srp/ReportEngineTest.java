@@ -29,8 +29,8 @@ public class ReportEngineTest {
                 .append("</tr>")
                 .append("<tr>")
                 .append("<td>Ivan</td>")
-                .append("<td>").append(now).append("</td>")
-                .append("<td>").append(now).append("</td>")
+                .append("<td>").append(now.getTime()).append("</td>")
+                .append("<td>").append(now.getTime()).append("</td>")
                 .append("<td>100.0</td>")
                 .append("</tr>")
                 .append("</tbody></table></div></body></html>");
@@ -49,8 +49,8 @@ public class ReportEngineTest {
                 .append("Name; Hired; Fired; Salary w/o tax;")
                 .append(System.lineSeparator())
                 .append("Ivan;")
-                .append(now).append(";")
-                .append(now).append(";")
+                .append(now.getTime()).append(";")
+                .append(now.getTime()).append(";")
                 .append("87.00;")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));

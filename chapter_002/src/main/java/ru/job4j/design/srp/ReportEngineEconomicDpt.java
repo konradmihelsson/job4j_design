@@ -20,8 +20,8 @@ public class ReportEngineEconomicDpt implements Report {
 
         for (Employee employee : this.store.findBy(filter)) {
             text.append(employee.getName()).append(";")
-                    .append(employee.getHired()).append(";")
-                    .append(employee.getFired()).append(";")
+                    .append(employee.getHired().getTime()).append(";")
+                    .append(employee.getFired().getTime()).append(";")
                     .append(this.converter.convert(employee.getSalary())).append(";")
                     .append(System.lineSeparator());
         }

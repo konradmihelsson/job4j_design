@@ -26,8 +26,8 @@ public class ReportEngineDvlDpt implements Report {
         for (Employee employee : this.store.findBy(filter)) {
             text.append("<tr>")
                     .append("<td>").append(employee.getName()).append("</td>")
-                    .append("<td>").append(employee.getHired()).append("</td>")
-                    .append("<td>").append(employee.getFired()).append("</td>")
+                    .append("<td>").append(employee.getHired().getTime()).append("</td>")
+                    .append("<td>").append(employee.getFired().getTime()).append("</td>")
                     .append("<td>").append(employee.getSalary()).append("</td>")
                     .append("</tr>");
         }
