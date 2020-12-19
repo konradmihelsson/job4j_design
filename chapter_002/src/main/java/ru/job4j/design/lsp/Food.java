@@ -10,14 +10,11 @@ public class Food {
     private double price;
     private byte discount;
 
-    private FoodStore foodStore;
-
-    public Food(String name, Date created, Date expiry, double price, FoodStore foodStore) {
+    public Food(String name, Date created, Date expiry, double price) {
         this.name = name;
         this.created = created;
         this.expiry = expiry;
         this.price = price;
-        this.foodStore = foodStore;
     }
 
     public Date getExpiry() {
@@ -32,15 +29,7 @@ public class Food {
         return price * (100 - this.discount) / 100;
     }
 
-    public FoodStore getFoodStore() {
-        return foodStore;
-    }
-
     public void setDiscount(byte discount) {
         this.discount = discount;
-    }
-
-    public void setFoodStore(FoodStore foodStore) {
-        this.foodStore = foodStore;
     }
 }

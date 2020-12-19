@@ -1,26 +1,33 @@
 package ru.job4j.design.lsp;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class QualityControl implements Runnable {
+public class QualityControl {
 
-    private List<Food> store;
-    private Map<String, MoveStrategy> strategyMap;
-    private Converter converter;
+    private List<FoodStore> store;
 
-    public QualityControl(List<Food> store, Map<String, MoveStrategy> strategyMap, Converter converter) {
-        this.store = store;
-        this.strategyMap = strategyMap;
-        this.converter = converter;
+    public QualityControl() {
+        this.store = new ArrayList<>();
     }
 
-    public void updateFoodStore(Food food) {
-        strategyMap.getOrDefault(converter.convert(food), strategyMap.get("Trash")).action(food);
+    void add(FoodStore foodStore) {
+        this.store.add(foodStore);
     }
 
-    @Override
-    public void run() {
-        store.forEach(this::updateFoodStore);
+    public void distribute() {
+        List<Food> foods = new ArrayList<>();
+        for (FoodStore foodStore : store) {
+            List<Food> foodsInStore = foodStore.clear();
+            foods.addAll(foodsInStore);
+        }
+        for (Food food : foods) {
+            for (FoodStore foodStore : store) {
+                if (foodStore.accept(food)) {
+                    foodStore.add(food);
+                    break;
+                }
+            }
+        }
     }
 }
