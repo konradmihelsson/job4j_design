@@ -29,16 +29,16 @@ public class QualityControlTest {
         Food meatL = new Meat("Lamb meat", new Date(today.getTime() - (2 * msPerDay)),
                 new Date(today.getTime() + (15 * msPerDay)), 600);
 
-        warehouse.add(bananaE);
-        warehouse.add(bananaU);
-        warehouse.add(meatC);
-        warehouse.add(meatL);
-
         QualityControl qualityControl = new QualityControl();
+
         qualityControl.add(warehouse);
         qualityControl.add(shop);
         qualityControl.add(trash);
-        qualityControl.distribute();
+
+        qualityControl.distribute(bananaE);
+        qualityControl.distribute(bananaU);
+        qualityControl.distribute(meatC);
+        qualityControl.distribute(meatL);
 
         assertThat(bananaU.getDiscountedPrice(), is(40.0));
         assertThat(warehouse.clear(), containsInAnyOrder(meatL));

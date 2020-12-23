@@ -15,18 +15,11 @@ public class QualityControl {
         this.store.add(foodStore);
     }
 
-    public void distribute() {
-        List<Food> foods = new ArrayList<>();
+    public void distribute(Food food) {
         for (FoodStore foodStore : store) {
-            List<Food> foodsInStore = foodStore.clear();
-            foods.addAll(foodsInStore);
-        }
-        for (Food food : foods) {
-            for (FoodStore foodStore : store) {
-                if (foodStore.accept(food)) {
-                    foodStore.add(food);
-                    break;
-                }
+            if (foodStore.accept(food)) {
+                foodStore.add(food);
+                break;
             }
         }
     }
