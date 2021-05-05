@@ -1,8 +1,6 @@
-package ru.job4j.design.lsp;
+package ru.job4j.design.lsp.carparking;
 
 public interface Parking {
 
     boolean park(Vehicle vehicle);
-
-    void leave(Vehicle vehicle);
 }
