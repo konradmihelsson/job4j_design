@@ -1,6 +1,6 @@
-package ru.job4j.design.isp;
+package ru.job4j.design.isp.exx;
 
-public class MultiTool implements Tool {
+public class Saw implements Tool {
     @Override
     public void toSaw() {
         System.out.println("Do nag!");
@@ -8,11 +8,11 @@ public class MultiTool implements Tool {
 
     @Override
     public void tighten() {
-        System.out.println("Do tighten!");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void cut() {
-        System.out.println("Do cut!");
+        throw new UnsupportedOperationException();
     }
 }

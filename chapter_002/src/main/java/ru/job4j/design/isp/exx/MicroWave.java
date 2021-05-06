@@ -1,4 +1,4 @@
-package ru.job4j.design.isp;
+package ru.job4j.design.isp.exx;
 
 public class MicroWave implements Cooker {
     @Override

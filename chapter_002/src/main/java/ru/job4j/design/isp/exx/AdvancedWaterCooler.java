@@ -1,6 +1,6 @@
-package ru.job4j.design.isp;
+package ru.job4j.design.isp.exx;
 
-public class SimpleWaterCooler implements WaterCooler {
+public class AdvancedWaterCooler implements WaterCooler {
     @Override
     public void pour() {
         System.out.println("Pour out");
@@ -8,16 +8,16 @@ public class SimpleWaterCooler implements WaterCooler {
 
     @Override
     public void heatUp() {
-        throw new UnsupportedOperationException();
+        System.out.println("Heating");
     }
 
     @Override
     public void coolDown() {
-        throw new UnsupportedOperationException();
+        System.out.println("Cooling");
     }
 
     @Override
     public void waterLevelMeasure() {
-        throw new UnsupportedOperationException();
+        System.out.println("Measuring");
     }
 }
