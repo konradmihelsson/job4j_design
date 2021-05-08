@@ -21,6 +21,14 @@ public class Element implements Printable, Active {
         this.childElements.add(element);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Element> getChildElements() {
+        return childElements;
+    }
+
     @Override
     public void doAction(Action action) {
         action.someAction();
