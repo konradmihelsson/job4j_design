@@ -23,4 +23,20 @@ public class QualityControl {
             }
         }
     }
+
+    public void resort() {
+        List<Food> foods = new ArrayList<>();
+        for (FoodStore foodStore : store) {
+            List<Food> foodsInStore = foodStore.clear();
+            foods.addAll(foodsInStore);
+        }
+        for (Food food : foods) {
+            for (FoodStore foodStore : store) {
+                if (foodStore.accept(food)) {
+                    foodStore.add(food);
+                    break;
+                }
+            }
+        }
+    }
 }
