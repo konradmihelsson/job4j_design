@@ -1,11 +1,13 @@
 package ru.job4j.design.isp.menu;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
+
 public class MenuTest {
 
     @Test
     public void whenTest() {
-        Menu menu = new Menu();
+        MenuSubmenuAdding menu = new MenuSubmenuAdding();
         Element element1 = new Element("1");
         Element element2 = new Element("2");
         Element element3 = new Element("3");
@@ -41,6 +43,9 @@ public class MenuTest {
         element11.addChildElement(element112);
         element11.addChildElement(element113);
 
-        menu.print();
+        Element element777 = new Element("777");
+        Element element888 = new Element("888");
+        assertTrue(menu.add("112", element777));
+        assertFalse(menu.add("555", element888));
     }
 }

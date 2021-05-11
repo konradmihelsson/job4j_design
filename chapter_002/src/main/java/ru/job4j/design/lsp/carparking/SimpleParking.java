@@ -12,6 +12,24 @@ public class SimpleParking implements Parking {
 
     @Override
     public boolean park(Vehicle vehicle) {
-        return false;
+        boolean result = false;
+        int size = vehicle.getSize();
+        if (size > 1) {
+            if (numOfTrucks > 0) {
+                numOfTrucks--;
+                result = true;
+            } else {
+                if (numOfCars >= size) {
+                    numOfCars = numOfCars - size;
+                    result = true;
+                }
+            }
+        } else {
+            if (numOfCars >= size) {
+                numOfCars = numOfCars - size;
+                result = true;
+            }
+        }
+        return result;
     }
 }
