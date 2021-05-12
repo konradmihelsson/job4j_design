@@ -16,12 +16,7 @@ public class QualityControl {
     }
 
     public void distribute(Food food) {
-        for (FoodStore foodStore : store) {
-            if (foodStore.accept(food)) {
-                foodStore.add(food);
-                break;
-            }
-        }
+        innerDistribution(this.store, food);
     }
 
     public void resort() {
@@ -31,11 +26,15 @@ public class QualityControl {
             foods.addAll(foodsInStore);
         }
         for (Food food : foods) {
-            for (FoodStore foodStore : store) {
-                if (foodStore.accept(food)) {
-                    foodStore.add(food);
-                    break;
-                }
+            innerDistribution(this.store, food);
+        }
+    }
+
+    private void innerDistribution(List<FoodStore> foodStores, Food food) {
+        for (FoodStore foodStore : store) {
+            if (foodStore.accept(food)) {
+                foodStore.add(food);
+                break;
             }
         }
     }
