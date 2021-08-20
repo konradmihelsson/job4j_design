@@ -45,4 +45,42 @@ public class QualityControlTest {
         assertThat(shop.clear(), containsInAnyOrder(bananaE, bananaU));
         assertThat(trash.clear(), containsInAnyOrder(meatC));
     }
+
+    @Test
+    public void whenResortTest() {
+
+        Date today = new Date();
+        long msPerDay = 1000 * 60 * 60 * 24;
+
+        FoodStore warehouse = new Warehouse();
+        FoodStore shop = new Shop();
+        FoodStore trash = new Trash();
+
+        Food bananaE = new Banana("Ecuador banana", new Date(today.getTime() - (14 * msPerDay)),
+                new Date(today.getTime() + (23 * msPerDay)), 90);
+        Food bananaU = new Banana("Uruguay banana", new Date(today.getTime() - (45 * msPerDay)),
+                new Date(today.getTime() + (5 * msPerDay)), 100);
+        Food meatC = new Meat("Cow meat", new Date(today.getTime() - (30 * msPerDay)),
+                new Date(today.getTime() - (2 * msPerDay)), 500);
+        Food meatL = new Meat("Lamb meat", new Date(today.getTime() - (2 * msPerDay)),
+                new Date(today.getTime() + (15 * msPerDay)), 600);
+
+        warehouse.add(bananaE);
+        warehouse.add(bananaU);
+        warehouse.add(meatC);
+        warehouse.add(meatL);
+
+        QualityControl qualityControl = new QualityControl();
+
+        qualityControl.add(warehouse);
+        qualityControl.add(shop);
+        qualityControl.add(trash);
+
+        qualityControl.resort();
+
+        assertThat(bananaU.getDiscountedPrice(), is(40.0));
+        assertThat(warehouse.clear(), containsInAnyOrder(meatL));
+        assertThat(shop.clear(), containsInAnyOrder(bananaE, bananaU));
+        assertThat(trash.clear(), containsInAnyOrder(meatC));
+    }
 }
