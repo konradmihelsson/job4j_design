@@ -11,11 +11,16 @@ import java.util.function.Predicate;
  * @version 0.1
  * @since version 0.1 2018-01-05
  */
-public class MemTracker {
+public class MemTracker implements Store {
     /**
      * Массив для хранение заявок.
      */
     private List<Item> items = new ArrayList<>();
+
+    @Override
+    public void init() {
+        // this is stub method
+    }
 
     /**
      * Метод реализаущий добавление заявки в хранилище
@@ -32,25 +37,24 @@ public class MemTracker {
      * @param id искомый идентификатор.
      * @param item заявка на замену.
      */
-    public void replace(String id, Item item) {
+    public boolean replace(String id, Item item) {
         boolean isFound = false;
-        int index = 0;
         Predicate<String> predicate = s -> s.equals(id);
-        while (!isFound) {
-            if (predicate.test(this.items.get(index).getId())) {
-                this.items.set(index, item);
+        for (Item storeItem : items) {
+            if (predicate.test(storeItem.getId())) {
+                this.items.set(this.items.indexOf(storeItem), item);
                 isFound = true;
-            } else {
-                index++;
+                break;
             }
         }
+        return isFound;
     }
 
     /**
      * Метод удаления элемента по id
      * @param id идентификатор
      */
-    public void delete(String id) {
+    public boolean delete(String id) {
         boolean isFound = false;
         int index = 0;
         Predicate<String> predicate = s -> s.equals(id);
@@ -64,6 +68,7 @@ public class MemTracker {
         if (isFound) {
             this.items.remove(index);
         }
+        return isFound;
     }
 
     /**
@@ -124,5 +129,10 @@ public class MemTracker {
             result = result.concat(String.valueOf(allowedChars[random.nextInt(allowedChars.length)]));
         }
         return result;
+    }
+
+    @Override
+    public void close() {
+        // this is stub method
     }
 }

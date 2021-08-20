@@ -10,6 +10,9 @@ import java.io.PrintStream;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StartUIOutputTest {
 
@@ -212,5 +215,42 @@ public class StartUIOutputTest {
                                 .toString()
                 )
         );
+    }
+
+    @Test
+    public void whenEditItemTest() {
+        Store tracker = new MemTracker();
+        Item item = new Item("Replaced item", "Some description");
+        String id = "11111111";
+        String replacedName = "New item name";
+        String replacedDesc = "New description";
+        tracker.add(item);
+        item.setId(id);
+        UserAction rep = new EditItem(1, "Replace item");
+        Input input = mock(Input.class);
+        when(input.ask(any(String.class))).thenReturn(id, replacedName, replacedDesc);
+        rep.execute(input, tracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(), is("---------- Заявка отредактирована. ----------" + ln));
+        assertThat(tracker.findAll().get(0).getName(), is(replacedName));
+    }
+
+    @Test
+    public void whenFindByNameTest() {
+        Store tracker = new MemTracker();
+        String id = "11111111";
+        String name = "SomeName";
+        String desc = "SomeDesc";
+        Item item = new Item(name, desc);
+        tracker.add(item);
+        item.setId(id);
+        UserAction rep = new FindByName(1, "Find item by name");
+        Input input = mock(Input.class);
+        when(input.ask(any(String.class))).thenReturn(name);
+        rep.execute(input, tracker);
+        String ln = System.lineSeparator();
+        assertThat(out.toString(), is("---------- Найдены следующие заявки. ----------" + ln
+                + "Идентификатор:  Имя:    Описание:" + ln + id + " " + name + " " + desc + ln));
+        assertThat(tracker.findAll().get(0).getId(), is(id));
     }
 }
